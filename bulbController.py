@@ -46,3 +46,10 @@ async def toggle():
     light = wizlight(ip_address)
     await light.lightSwitch()
 
+@async_to_sync
+async def displayScene(sceneID):
+    ip_address = getIpAddress()
+    light = wizlight(ip_address)
+    await light.turn_on(PilotBuilder(scene = int(sceneID)))
+
+    

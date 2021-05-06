@@ -2,8 +2,9 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 from json import dumps
 from flask_jsonpify import jsonify
-from bulbMethods import getBulbStatus, turnOnBulb, turnOffBulb, getBulbIpAddress, toggleBulb
+from bulbMethods import getBulbStatus, turnOnBulb, turnOffBulb, getBulbIpAddress, toggleBulb, displayBulbScene
 from dbcontroller import dbInit
+from scenes import scenes
 from routes import routes
 import asyncio
 
@@ -17,23 +18,49 @@ class BulbStatus(Resource):
 
 class BulbOn(Resource):
     def get(self):
-        result = {'data': turnOnBulb()}
+        result = ""
+        try:
+            turnOnBulb()
+            result = "on"
+        except:
+            result = "error"
         return jsonify(result)
 
 class BulbOff(Resource):
     def get(self):
-        result = {'data': turnOffBulb()}
+        result = ""
+        try:
+            turnOffBulb()
+            result = "off"
+        except:
+            result = "error"
         return jsonify(result)
 
 class BulbToggle(Resource):
     def get(self):
-        result = {'data': toggleBulb()}
+        result = ""
+        try:
+            toggleBulb()
+            result = "ok"
+        except:
+            result = "error"
+        return jsonify(result)
+
+class BulbScene(Resource):
+    def get(self, sceneID):
+        result = ""
+        try:
+            displayBulbScene(sceneID)
+            result = scenes[int(sceneID)]
+        except Exception as error:
+            result = str(error)
         return jsonify(result)
 
 api.add_resource(BulbStatus, routes['bulbStatus'])
 api.add_resource(BulbOn, routes['bulbOn'])
 api.add_resource(BulbOff, routes['bulbOff'])
 api.add_resource(BulbToggle, routes['bulbToggle'])
+api.add_resource(BulbScene, routes['bulbScene'])
 
 
 if __name__ == '__main__':
