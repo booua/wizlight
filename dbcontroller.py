@@ -4,7 +4,7 @@ import time
 
 def dbInit():
     try:
-        con = sqlite3.connect('bulbs.db')
+        con = sqlite3.connect('/home/wizlight/bulbs.db')
         cur = con.cursor()
         cur.execute("DROP TABLE bulbs")
         cur.execute('''CREATE TABLE IF NOT EXISTS bulbs
@@ -17,7 +17,7 @@ def dbInit():
 
 def saveIpAddress(ip_address):
     try:
-        con = sqlite3.connect('bulbs.db')
+        con = sqlite3.connect('/home/wizlight/bulbs.db')
         cur = con.cursor()
         cur.execute("insert into bulbs values (?, ?)", (time.time(), ip_address))
         con.commit()
@@ -27,7 +27,7 @@ def saveIpAddress(ip_address):
 
 def getIpAddress():
     try:
-        con = sqlite3.connect('bulbs.db')
+        con = sqlite3.connect('/home/wizlight/bulbs.db')
         cur = con.cursor()
         cur.execute("select ip_address from bulbs")
         ip_address = cur.fetchone()
