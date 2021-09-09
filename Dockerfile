@@ -1,34 +1,34 @@
-FROM continuumio/miniconda3:latest
+# FROM continuumio/miniconda3:latest
 
 
-RUN conda config --add channels conda-forge && \
-    conda create -y -n flask python=3 flask=0.12 uwsgi
-COPY requirements.txt /temp/requirements.txt
-RUN pip3 install --no-cache-dir -r /temp/requirements.txt
+# RUN conda config --add channels conda-forge && \
+#     conda create -y -n flask python=3 flask=0.12 uwsgi
+# COPY requirements.txt /temp/requirements.txt
+# RUN pip3 install --no-cache-dir -r /temp/requirements.txt
 
-# Create a flask user to avoid running uwsgi as root
-RUN useradd -r flask
+# # Create a flask user to avoid running uwsgi as root
+# RUN useradd -r flask
 
-COPY server.py /app/server.py
-RUN chown -R flask /app
+# COPY server.py /app/server.py
+# RUN chown -R flask /app
 
-USER flask
+# USER flask
 
-# activate the flask environment
-ENV PATH /opt/conda/envs/flask/bin:$PATH
-WORKDIR /app
+# # activate the flask environment
+# ENV PATH /opt/conda/envs/flask/bin:$PATH
+# WORKDIR /app
 
-EXPOSE 5005
+# EXPOSE 5005
 
-# CMD ["uwsgi", "--http-socket", "0.0.0.0:5005", "--wsgi-file", "server.py", "--callable", "app"]
-CMD ["python3", "server.py"]
+# # CMD ["uwsgi", "--http-socket", "0.0.0.0:5005", "--wsgi-file", "server.py", "--callable", "app"]
+# CMD ["python3", "server.py"]
 
 
 
-# FROM python:3
-# ADD . /wizlight
-# WORKDIR /wizlight
-# RUN pip3 install --no-cache-dir -r requirements.txt
-# RUN pip3 install uwsgi
+FROM python:3
+ADD . /wizlight
+WORKDIR /wizlight
+RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install uwsgi
 
-# CMD python3 server.py
+CMD python3 server.py
