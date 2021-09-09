@@ -3,13 +3,7 @@ FROM continuumio/miniconda3:latest
 
 RUN conda config --add channels conda-forge && \
     conda create -y -n flask python=3 flask=0.12 uwsgi
-COPY requirements.txt /tmp/requirements.txt
-RUN conda install -n flask asgiref
-RUN conda install -n flask asyncio-dgram
-RUN conda install -n flask Flask
-RUN conda install -n flask Flask-Jsonpify
-RUN conda install -n flask Flask-RESTful
-RUN conda install -n flask pywizlight
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Create a flask user to avoid running uwsgi as root
 RUN useradd -r flask
