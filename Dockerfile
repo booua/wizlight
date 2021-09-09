@@ -20,7 +20,8 @@ WORKDIR /app
 
 EXPOSE 5005
 
-CMD ["uwsgi", "--http-socket", "0.0.0.0:5005", "--wsgi-file", "server.py", "--callable", "app"]
+# CMD ["uwsgi", "--http-socket", "0.0.0.0:5005", "--wsgi-file", "server.py", "--callable", "app"]
+CMD ["python3", "server.py"]
 
 
 
