@@ -4,6 +4,8 @@ FROM continuumio/miniconda3:latest
 RUN conda config --add channels conda-forge && \
     conda create -y -n flask python=3 flask=0.12 uwsgi
 
+RUN conda install -n flask requirements.txt
+
 # Create a flask user to avoid running uwsgi as root
 RUN useradd -r flask
 
