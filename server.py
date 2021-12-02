@@ -2,7 +2,7 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 from json import dumps
 from flask_jsonpify import jsonify
-from bulbMethods import getBulbStatus, turnOnBulb, turnOffBulb, getBulbIpAddress, toggleBulb, displayBulbScene
+from bulbMethods import getBulbStatus, turnOnBulb, turnOffBulb, getBulbIpAddress, toggleBulb, displayBulbScene, setBulbBrightness
 from dbcontroller import dbInit
 from scenes import scenes
 from routes import routes
@@ -55,12 +55,23 @@ class BulbScene(Resource):
         except Exception as error:
             result = str(error)
         return jsonify(result)
+class BulbBrightness(Resource):
+    def get(self, brightness):
+        result = ""
+        try:
+            setBulbBrightness(brightness)
+            result = "ok"
+        except Exception as error:
+            result = str(error)
+        return jsonify(result)
+
 
 api.add_resource(BulbStatus, routes['bulbStatus'])
 api.add_resource(BulbOn, routes['bulbOn'])
 api.add_resource(BulbOff, routes['bulbOff'])
 api.add_resource(BulbToggle, routes['bulbToggle'])
 api.add_resource(BulbScene, routes['bulbScene'])
+api.add_resource(BulbBrightness, routes['bulbBrightness'])
 
 
 if __name__ == '__main__':

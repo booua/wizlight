@@ -52,4 +52,13 @@ async def displayScene(sceneID):
     light = wizlight(ip_address)
     await light.turn_on(PilotBuilder(scene = int(sceneID)))
 
+@async_to_sync
+async def setBrightness(brigtness):
+    ip_address = getIpAddress()
+    light = wizlight(ip_address)
+    state = await light.updateState()
+    stateDict = state.__dict__
+    if(stateDict['pilotResult']['state']):
+        await light.turn_on(PilotBuilder(brightness = int(brigtness)))
+
     

@@ -1,4 +1,4 @@
-from bulbController import bulbStatus, fetchBulbIPAddress, turnOn, turnOff, toggle, displayScene
+from bulbController import bulbStatus, fetchBulbIPAddress, setBrightness, turnOn, turnOff, toggle, displayScene
 
 def getBulbStatus():
     return bulbStatus()
@@ -17,3 +17,6 @@ def toggleBulb():
 
 def displayBulbScene(sceneID):
     return displayScene(sceneID)
+
+def setBulbBrightness(brightness):
+    return setBrightness(brightness)
