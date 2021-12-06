@@ -21,9 +21,9 @@ async def bulbStatus():
     print(stateDict)
     statusObj = {
         "state": stateDict['pilotResult']['state'],
-        "dimming": stateDict['pilotResult']['dimming'],
-        "sceneName": scenes[stateDict['pilotResult']['sceneId']],
         "stateName": "on" if stateDict['pilotResult']['state'] else "off",
+        "brightness": stateDict['pilotResult']['dimming'],
+        "sceneName": scenes[stateDict['pilotResult']['sceneId']],
         "ip_address": ip_address,
     }
     return statusObj
@@ -50,15 +50,20 @@ async def toggle():
 async def displayScene(sceneID):
     ip_address = getIpAddress()
     light = wizlight(ip_address)
-    await light.turn_on(PilotBuilder(scene = int(sceneID)))
+    state = await light.updateState()
+    stateDict = state.__dict__
+    if(stateDict['pilotResult']['state']):
+        await light.turn_on(PilotBuilder(scene = int(sceneID)))
 
 @async_to_sync
-async def setBrightness(brigtness):
+async def setBrightness(brigtnessPercentage):
+    brightnessValue = ((255 * int(brigtnessPercentage)) / 100)
+    print(brightnessValue)
     ip_address = getIpAddress()
     light = wizlight(ip_address)
     state = await light.updateState()
     stateDict = state.__dict__
     if(stateDict['pilotResult']['state']):
-        await light.turn_on(PilotBuilder(brightness = int(brigtness)))
+        await light.turn_on(PilotBuilder(brightness = int(brightnessValue)))
 
     
